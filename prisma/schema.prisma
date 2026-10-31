@@ -1,0 +1,92 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String   // Hashed with bcrypt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("admins")
+}
+
+model Fighter {
+  id                Int       @id @default(autoincrement())
+  fighterId         String    @unique @map("fighter_id")
+  fullName          String    @map("full_name")
+  dateOfBirth       DateTime? @map("date_of_birth")
+  gender            String?
+  bloodGroup        String    @map("blood_group")
+  hospital          String?
+  assignedNgo       String?   @map("assigned_ngo")
+  transfusionStatus String    @default("Stable") @map("transfusion_status")
+  lastTransfusion   DateTime? @map("last_transfusion")
+  nextDue           DateTime? @map("next_due")
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  @@map("fighters")
+}
+
+model Donor {
+  id              Int       @id @default(autoincrement())
+  donorName       String    @map("donor_name")
+  contactNumber   String    @map("contact_number")
+  bloodGroup      String?   @map("blood_group")
+  districtCovered String?   @map("district_covered")
+  donationDate    DateTime? @map("donation_date")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@map("donors")
+}
+
+model TeamRegistration {
+  id          Int      @id @default(autoincrement())
+  fullName    String   @map("full_name")
+  phoneNumber String   @map("phone_number")
+  roleApplied String   @map("role_applied")
+  status      String   @default("Pending")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("team_registrations")
+}
+
+model CampSchedule {
+  id              Int      @id @default(autoincrement())
+  campTitle       String   @map("camp_title")
+  location        String
+  targetCity      String   @map("target_city")
+  campDate        DateTime @map("camp_date")
+  targetBags      Int      @default(50) @map("target_bags")
+  collectedBags   Int      @default(0) @map("collected_bags")
+  coordinatorName String   @map("coordinator_name")
+  contactNumber   String   @map("contact_number")
+  status          String   @default("Scheduled") // Scheduled, In Progress, Completed, Cancelled
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("camp_schedules")
+}
+
+model DonorDispatch {
+  id            Int      @id @default(autoincrement())
+  fighterId     String   @map("fighter_id")
+  fighterName   String   @map("fighter_name")
+  donorId       Int?     @map("donor_id")
+  donorName     String   @map("donor_name")
+  donorPhone    String   @map("donor_phone")
+  bloodGroup    String   @map("blood_group")
+  hospital      String
+  urgency       String   @default("Immediate") // Immediate, Within 24h, Routine
+  status        String   @default("Dispatched") // Dispatched, En Route, Blood Collected, Completed, Cancelled
+  notes         String?
+  dispatchDate  DateTime @default(now()) @map("dispatch_date")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("donor_dispatches")
+}
