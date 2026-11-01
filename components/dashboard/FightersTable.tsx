@@ -13,6 +13,8 @@ import {
   Building2,
   Droplet,
   Plus,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { BLOOD_GROUPS, TRANSFUSION_STATUSES } from "@/lib/validations";
 import FighterEditModal from "./FighterEditModal";
@@ -49,6 +51,8 @@ export default function FightersTable({
   const [selectedBloodGroup, setSelectedBloodGroup] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedHospital, setSelectedHospital] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const [editingFighter, setEditingFighter] = useState<Fighter | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -78,6 +82,11 @@ export default function FightersTable({
 
     return matchesSearch && matchesBlood && matchesStatus && matchesHospital;
   });
+
+  const totalPages = Math.max(1, Math.ceil(filteredFighters.length / pageSize));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const startIndex = (safeCurrentPage - 1) * pageSize;
+  const paginatedFighters = filteredFighters.slice(startIndex, startIndex + pageSize);
 
   const handleDelete = async (id: number, name: string) => {
     if (!confirm(`Are you sure you want to delete fighter record "${name}"?`)) {
@@ -296,7 +305,7 @@ export default function FightersTable({
                 </td>
               </tr>
             ) : (
-              filteredFighters.map((f) => (
+              paginatedFighters.map((f) => (
                 <tr
                   key={f.id}
                   className="hover:bg-rose-50/30 transition-colors group"
@@ -378,6 +387,71 @@ export default function FightersTable({
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Footer */}
+      {filteredFighters.length > 0 && (
+        <div className="px-5 py-3.5 border-t border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+          <div className="flex items-center gap-2">
+            <span>
+              Showing{" "}
+              <strong className="text-gray-900 font-bold">
+                {startIndex + 1}
+              </strong>{" "}
+              to{" "}
+              <strong className="text-gray-900 font-bold">
+                {Math.min(startIndex + pageSize, filteredFighters.length)}
+              </strong>{" "}
+              of{" "}
+              <strong className="text-gray-900 font-bold">
+                {filteredFighters.length}
+              </strong>{" "}
+              patients
+            </span>
+
+            <span className="text-gray-300">|</span>
+
+            <div className="flex items-center gap-1.5">
+              <span>Per page:</span>
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="py-1 px-2 rounded-lg bg-white border border-gray-200 text-gray-800 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-rose-500"
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={safeCurrentPage <= 1}
+              className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              title="Previous Page"
+            >
+              <ChevronLeft className="w-4 h-4 text-gray-700" />
+            </button>
+
+            <span className="px-2.5 py-1 font-bold text-gray-900">
+              Page {safeCurrentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={safeCurrentPage >= totalPages}
+              className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              title="Next Page"
+            >
+              <ChevronRight className="w-4 h-4 text-gray-700" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Edit Modal */}
       {editingFighter && (
