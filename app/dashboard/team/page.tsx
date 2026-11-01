@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import TeamReviewer from "@/components/dashboard/TeamReviewer";
-import { Users, Sparkles, ExternalLink } from "lucide-react";
+import { Users, Sparkles, ExternalLink, FileSpreadsheet, Download } from "lucide-react";
 import Link from "next/link";
 
 export default function TeamPage() {
@@ -45,14 +45,25 @@ export default function TeamPage() {
           </p>
         </div>
 
-        <Link
-          href="/#registration-section"
-          target="_blank"
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold transition-colors"
-        >
-          <ExternalLink className="w-3.5 h-3.5" />
-          <span>Open Public Application Form</span>
-        </Link>
+        <div className="flex items-center gap-2.5">
+          <a
+            href="/api/export-excel"
+            download
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-colors shadow-2xs"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+            <span>Export All Records (Excel)</span>
+          </a>
+
+          <Link
+            href="/#registration-section"
+            target="_blank"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold transition-colors"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>Open Public Application Form</span>
+          </Link>
+        </div>
       </div>
 
       {/* Team Reviewer Component */}

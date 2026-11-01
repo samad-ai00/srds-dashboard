@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import DonorsTable from "@/components/dashboard/DonorsTable";
 import QuickAddModal from "@/components/dashboard/QuickAddModal";
-import { Droplet, Plus, HeartPulse } from "lucide-react";
+import { Droplet, Plus, HeartPulse, FileSpreadsheet, Download } from "lucide-react";
 import Link from "next/link";
 
 export default function DonorsPage() {
@@ -48,6 +48,15 @@ export default function DonorsPage() {
         </div>
 
         <div className="flex items-center gap-2">
+          <a
+            href="/api/export-excel"
+            download
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-colors shadow-2xs"
+          >
+            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Export to Excel</span>
+          </a>
+
           <Link
             href="/dashboard/matching"
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold shadow-xs transition-colors"

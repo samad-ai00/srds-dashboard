@@ -11,6 +11,8 @@ import {
   CheckCircle2,
   AlertTriangle,
   UserCheck,
+  FileSpreadsheet,
+  Download,
 } from "lucide-react";
 import QuickAddModal from "@/components/dashboard/QuickAddModal";
 
@@ -89,17 +91,15 @@ export default function DashboardHeader({
             </div>
           )}
 
-          <button
-            onClick={handleSeedDemoData}
-            disabled={seeding}
-            title="Populate demo patients, donors, dispatches & camps"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors disabled:opacity-50"
+          <a
+            href="/api/export-excel"
+            download
+            title="Download live database as Excel / CSV"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition-colors shadow-2xs"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            <span className="hidden sm:inline">
-              {seeding ? "Seeding..." : "Seed Data"}
-            </span>
-          </button>
+            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="hidden sm:inline">Export Excel</span>
+          </a>
 
           {onRefresh && (
             <button

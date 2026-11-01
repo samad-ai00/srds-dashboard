@@ -15,6 +15,8 @@ import {
   ChevronRight,
   Sparkles,
   UserCheck,
+  FileSpreadsheet,
+  Download,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -87,7 +89,7 @@ export default function Sidebar({
       icon: Droplet,
     },
     {
-      label: "Team Reviews",
+      label: "Team Registrations",
       href: "/dashboard/team",
       icon: Users,
       badge: counts?.pendingApplications ? `${counts.pendingApplications}` : undefined,
@@ -171,6 +173,22 @@ export default function Sidebar({
         })}
 
         <div className="pt-4 mt-4 border-t border-slate-800/80 px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          Data Export & Tools
+        </div>
+
+        <a
+          href="/api/export-excel"
+          download
+          className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-emerald-300 bg-emerald-950/40 border border-emerald-800/40 hover:bg-emerald-900/50 hover:text-emerald-200 transition-colors group mb-2"
+        >
+          <div className="flex items-center gap-2.5">
+            <FileSpreadsheet className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+            <span>Export to Excel / Sheet</span>
+          </div>
+          <Download className="w-3.5 h-3.5 text-emerald-400" />
+        </a>
+
+        <div className="pt-2 px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
           Portals & Links
         </div>
 
