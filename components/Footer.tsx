@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Droplet, Heart, Shield, PhoneCall, LogIn } from "lucide-react";
+import { Droplet, Heart, Shield, PhoneCall } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
@@ -56,12 +56,6 @@ export default function Footer() {
                 <a href="/#registration-section" className="hover:text-rose-400 transition-colors">
                   Register Blood Fighter Patient
                 </a>
-              </li>
-              <li>
-                <Link href="/admin/login" className="hover:text-rose-400 transition-colors flex items-center gap-1.5">
-                  <LogIn className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Admin Staff Login</span>
-                </Link>
               </li>
             </ul>
           </div>
