@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { X, Droplet, ShieldAlert, UserPlus } from "lucide-react";
+import { X, Droplet, ShieldAlert, UserPlus, Users } from "lucide-react";
 import FighterRegistrationForm from "../FighterRegistrationForm";
 import DonorRegistrationForm from "../DonorRegistrationForm";
+import TeamRegistrationForm from "../TeamRegistrationForm";
 
 interface Props {
   isOpen: boolean;
-  defaultTab?: "fighter" | "donor";
+  defaultTab?: "fighter" | "donor" | "team";
   onClose: () => void;
   onAdded: () => void;
 }
@@ -18,7 +19,7 @@ export default function QuickAddModal({
   onClose,
   onAdded,
 }: Props) {
-  const [tab, setTab] = useState<"fighter" | "donor">(defaultTab);
+  const [tab, setTab] = useState<"fighter" | "donor" | "team">(defaultTab);
 
   if (!isOpen) return null;
 
@@ -26,7 +27,7 @@ export default function QuickAddModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-150">
       <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex items-center justify-between z-10">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <button
               onClick={() => setTab("fighter")}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
@@ -47,6 +48,16 @@ export default function QuickAddModal({
             >
               Add Blood Donor
             </button>
+            <button
+              onClick={() => setTab("team")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                tab === "team"
+                  ? "bg-rose-600 text-white shadow-sm"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              Add Team Member
+            </button>
           </div>
 
           <button
@@ -65,8 +76,15 @@ export default function QuickAddModal({
                 onClose();
               }}
             />
-          ) : (
+          ) : tab === "donor" ? (
             <DonorRegistrationForm
+              onSuccess={() => {
+                onAdded();
+                onClose();
+              }}
+            />
+          ) : (
+            <TeamRegistrationForm
               onSuccess={() => {
                 onAdded();
                 onClose();
